@@ -21,7 +21,8 @@ $logo_img = '<img src="image/logo.png" alt="イラスト２" >';
 $logo_img = '';
 if(array_key_exists('search_query',$_GET)){
 	$value = $_GET['search_query'];
-	$value =  str_replace("%20","+",htmlentities(urldecode($value)));
+	//$value =  str_replace("%20","+",htmlentities(urldecode($value)));
+	$value =  str_replace("%20","+",urldecode($value));
 }else{
 	$value = "";
 }
