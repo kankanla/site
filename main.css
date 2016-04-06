@@ -1,0 +1,337 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+	margin: 0;
+	padding: 0;
+	font-weight: normal;
+	font-style: normal;
+	box-sizing: border-box;
+	/* font-family: "Segoe UI","微軟正黑體","Microsoft JhengHei","Arial","新細明體"; */
+	/* yahoo.com.tw */
+	font-family: 'Helvetica Neue',Helvetica,Arial,STHeiti,'Microsoft JhengHei',微軟正黑體,sans-serif;  
+}
+
+body {
+	/* overflow:hidden; */
+	display:block;
+}
+
+
+a{/*リンクされた文字*/
+    color:inherit;
+    font-style:inherit;
+	text-decoration: inherit;
+	
+}
+a:link {/*未訪問のリンク*/
+    color:inherit;
+    font-style:inherit;
+	text-decoration: inherit;
+}
+a:visited {/*訪問後のリンク*/
+    color:inherit;
+}
+
+a:hover {/*マウスをのせたとき*/
+    color:inherit;
+    font-style:inherit;
+	text-decoration: inherit;
+}
+a:active {/*クリック中*/
+	color:inherit;
+    font-style:inherit;
+	text-decoration: inherit;
+}
+
+
+/* ////////////////////////////////////////////////////////////////////////
+border-color:#ccc
+background-color:#f1f1f1;
+include_searchform:height: 50px;
+////////////////////////////////////////////////////////////////////////*/
+
+
+/* /////////////////////////////////////////////////////////////////// */
+/* index-searchform */
+/* include_searchform.file */
+#index-searchform {
+	position:relative;
+}
+
+#include_searchform{
+	z-index:999;
+	background-color: #f1f1f1;
+	border-bottom: 1px solid #ccc;
+    height: 50px;				/* index-searchform の高さ 50px */
+    display: flex;
+	align-items: center;
+    flex-wrap: nowrap;
+	justify-content: space-between;
+	position: fixed;
+	width: 100%;
+}
+
+#searchform_log {
+	background-image:url("./image/logo.png");
+	background-repeat: no-repeat;
+	padding-left:22px;
+	min-width:132px;
+	min-height:43px;
+}
+
+#searchform_from{
+	width:100%;
+	text-align: center;
+	white-space: nowrap;
+}
+
+#f{
+	text-align:left;
+	height:31px;
+}
+
+#sub_list{
+    overflow: scroll;
+    overflow-x: hidden;
+    max-height: 300px;
+	position:absolute;
+	background-color: rgb(255, 255, 255);
+	box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+	border: 1px solid #ccc;
+	display:none;
+}
+
+#sub_list ul{
+	text-align: left;
+	list-style-type:none;
+}
+
+#sub_list li{
+	padding:5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+
+		font-family: arial,sans-serif;
+}
+
+#searchform_q{
+    padding: 5px;
+    margin-left: 50px;
+    height: auto;
+ 	width:80%;
+	height:30px;
+	max-width:580px;
+	box-sizing: border-box;
+	font-family: arial,sans-serif;
+}
+
+#searchform_button{
+	border: 0;
+	border-color: rgb(241,241,241);
+    background-color: rgb(241, 241, 241);
+	height:30px;
+	width:60px;
+	padding:5px;
+}
+
+#searchform_login{
+	
+}
+
+/* /////////////////////////////////////////////////////////////////// */
+/* include_main.file */
+#index-main{
+	display:flex;
+	height: 99%;
+	overflow: hidden;
+	padding-top: 50px;
+}
+
+
+#include_main_left{
+	/* display:none; */
+	overflow:hidden;
+    width: 230px;
+    max-width: 230px;
+    min-width: 230px;
+	height:100%;
+	background-color: #f1f1f1;
+	border-right: 1px solid #ccc;
+}
+
+#left_scroll_menu{
+
+}
+
+#main_scroll{
+	display:flex;
+	overflow: scroll;
+	overflow-x: auto;
+	width:100%;
+	padding: 3px;
+	flex-direction: column;
+	align-items: center;
+	position: relative;
+}
+
+#include_main_area{
+	display:flex;
+}
+
+@media (min-width: 1350px){
+	#include_main_area{
+		position: static;
+	}
+}
+
+@media (max-width: 1350px){
+	#include_main_area{
+		    position: absolute;
+	}
+}
+
+#include_main_document{
+	min-width: 800px;
+}
+
+#include_main_right{
+	min-width:300px;
+}
+
+/* /////////////////////////////////////////////////////////////////// */
+/* include_allartist.file */
+#item_card_area{
+	width:100%;
+	max-width: 900px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.item_cards{
+	margin: 9px;
+    width: 200px;
+    height: 145px;
+	box-shadow: 1px 1px 1px;
+	/* background-color: rgba(0, 0, 0, 0.09);
+	background-color: rgba(32, 23, 60, 0.88); */
+	background-color: rgba(255, 69, 0, 0.86);
+	word-wrap: break-word;
+	position: relative;
+}
+
+.item_cards_filter{
+	position: absolute;
+    width: 200px;
+    height: 100px;
+    background-color: rgba(230, 230, 250, 0.2);
+}
+
+.allartist_title{
+	padding:5px;
+	font-size: 26px;
+    font-weight: bold;
+    color: white;
+	text-shadow: 1px 1px 1px #0069EA;
+}
+
+.allartist_title a{
+	padding:5px;
+	font-size: 26px;
+    font-weight: bold;
+    color: white;
+}
+
+.item_cards img{
+	width: 200px;
+    height: 100px;
+}
+
+/* /////////////////////////////////////////////////////////////////// */
+/* include_adsense.file */
+#adsense_area1{
+	width: 900px;
+    height: 300px;
+    min-height: 300px;
+    background-color: aquamarine;
+}
+
+#adsense_area2{
+	width: 300px;
+    height: 250px;
+    min-height: 250px;
+    background-color: aquamarine;
+}
+
+#adsense_area3{
+	width: 300px;
+    height: 250px;
+    min-height: 250px;
+    background-color: aquamarine;
+}
+
+/* /////////////////////////////////////////////////////////////////// */
+/* include_main_document.file */
+#include_main_document{
+	width:800px;
+	word-wrap: break-word;
+}
+
+
+/* ////////////////////////////////////////// */
+/* 00074 */
+#S0110_from_lid{
+	line-height: 30px;
+	/* http://www.shoshinsha.com/hp/ref/css/line-height.html */
+	white-space: pre-wrap;
+	/* http://www.tohoho-web.com/css/prop/white-space.htm */
+	/* background-color: antiquewhite; */
+	box-sizing: border-box;
+	margin-top:30px;
+	margin-left:10px;
+	margin-right:20px;
+
+
+}
+
+.S0100_main_document_artist_card{
+		/* background-color:red; */
+		display:flex;
+	border-style: double;
+    border-width: 1px;
+    border-color: #CCC;
+}
+
+.S0102_main_artist_top_left{
+		margin:20px;
+}
+
+.S0102_main_artist_top_left img{
+		width:300px;
+
+}
+
+.S0101_main_document_artist_info{
+	    padding: 20px;
+}
+
+.S0103_mini_card_area{
+	/* background-color:red; */
+	display:flex;
+	flex-wrap:wrap;
+	border-style: double;
+    border-width: 1px;
+    border-color: #CCC;
+}
+
+.S0104_mini_card img{
+		width:192px;
+		height:120px;
+		padding:5px;
+		
+}

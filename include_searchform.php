@@ -15,14 +15,16 @@ if($_SERVER['SERVER_ADDR'] === '192.168.11.10'){
 	include_once('C:/htdocs/doc/acclog.php');
 }
 
-
 $action_url = $_SERVER['REQUEST_URI'];
-$logo_img = '<img src="image/logo.png" alt="イラスト２" >';
+$logo_img = '<img src="image/logo.png" alt="テスト" >';
 $logo_img = '';
 if(array_key_exists('search_query',$_GET)){
 	$value = $_GET['search_query'];
+	if(DEBUG){echo $value;};
+	//その一
 	//$value =  str_replace("%20","+",htmlentities(urldecode($value)));
-	$value =  str_replace("%20","+",urldecode($value));
+	//その二
+	$value =  htmlspecialchars($value);
 }else{
 	$value = "";
 }
@@ -34,7 +36,7 @@ echo '<div id = "include_searchform">';
 	
 	echo '<div id = "searchform_from">';
 		echo "<form action =\"{$action_url}\" id =\"f\" method = \"get\">";
-			echo "<input type=\"text\" id = \"searchform_q\" name = \"search_query\" value = \"{$value}\" autocomplete=\"off\" >";
+			echo sprintf("<input type=\"text\" id = \"searchform_q\" name = \"search_query\" value = \"%s\" autocomplete=\"off\" >",urldecode($value));
 			echo '<button id = "searchform_button">send</button>';
 		echo '<div id = "sub_list"></div>';
 		echo '</form>';
@@ -74,9 +76,7 @@ function sub_list(){
 	if(input_text.value == ""){
 		sub_text.style.display = "none";
 	}else{
-		sub_list_ajax(input_text.value.replace(/&/g,'%2526'),'198');
-		console.log(input_text.value);
-		//sub_list_ajax(input_text.value,'198');
+		sub_list_ajax(input_text.value,'198');
 	}
 }
 
@@ -100,7 +100,6 @@ function sub_list_event(){
 			
 			sub_list.childNodes[x].addEventListener("click",
 				function(){
-					//console.log(this.getAttribute('req_url').replace(/%26/g,'%2526'));	//
 					location.href = location.origin + location.pathname +'?search_query=' + this.getAttribute('req_url').replace(/%26/g,'%2526');
 				},
 				true);
@@ -117,6 +116,7 @@ function sub_list_none(){
 //include_searchform.php
 function sub_list_ajax(q_data,rand){
 	//rand = 198
+	console.log('#20001');
 	var x = new XMLHttpRequest();
 	var url = '/youtube_db/search.php?rand=' + rand;
 
@@ -125,15 +125,14 @@ function sub_list_ajax(q_data,rand){
 				var sub_text = document.getElementById('sub_list');
 				var input_text = document.getElementById('searchform_q');
 				var get_list = JSON.parse(x.responseText);
+				console.log(get_list);
 				var ii = "";
-				if(get_list.length > 3){
+				if(get_list.length > 0){
 					for(var i = 0; i < get_list.length ; ++i){
 						// if(i<18){
 							var temp_replace = decodeURI(get_list[i].items.replace(/ /g,'+'));
 								temp_replace = decodeURI(temp_replace.replace(/&/g,'%26'));
-							ii = ii + '<li req_url = ' + temp_replace + '><h5>' + decodeURI(get_list[i].items) + '</h5></li>';
-							//ii = ii + '<li req_url = ' + temp_replace + '>' + decodeURI(get_list[i].items) + '</li>';
-						// }
+								ii = ii + '<li req_url = ' + temp_replace + '><h5>' + get_list[i].items + '</h5></li>';
 					}
 
 					sub_text.innerHTML = '<ul>' + ii + '</ul>';
