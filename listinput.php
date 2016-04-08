@@ -23,6 +23,7 @@ if($_SERVER['SERVER_ADDR'] === '192.168.11.10'){
 <html>
   <body>
 	<div>信息录入界面20160313</div>
+	<div><a href="./ypapi.html" title="">ypapi.html</a></div>
     <div id="player"></div>
 	<br>
 	<div>list_id</div>
@@ -73,7 +74,6 @@ if($_SERVER['SERVER_ADDR'] === '192.168.11.10'){
 
 		
 		function onPlayerStateChange(event) {
-			
 			if(event.target.getPlayerState()== -0){
 			}
 			
@@ -98,12 +98,10 @@ if($_SERVER['SERVER_ADDR'] === '192.168.11.10'){
 					console.log('#007 ------start------');
 					console.log(event.target.getPlaylistIndex());
 					console.log(event.target.getVideoData());
-					
 					var v_data = event.target.getVideoData();
 						console.info('#017 v_data',v_data);
 						v_data.title = encodeURIComponent(fn_replace(v_data.title));
 						v_data.author = encodeURIComponent(fn_replace(v_data.author));
-
 					send(v_data,'129');
 					send({"lid_rowid":lid_rowid,"video_id":v_data.video_id},'198');
 					console.log('#008------end------');
@@ -155,7 +153,7 @@ if($_SERVER['SERVER_ADDR'] === '192.168.11.10'){
 			var url = '/youtube_db/add_eng.php?rand=' + rand;
 				ajax.onreadystatechange = function(){
 					if(ajax.readyState == 4 && ajax.status == 200){
-						console.info('#157 send responseText',ajax.responseText);
+						console.info('#157 send responseText', ajax.responseText);
 						if(JSON.parse(ajax.responseText)['video_id'] && !JSON.parse(ajax.responseText)['updatecheck']){
 							console.log('v_data: ' + decodeURIComponent(ajax.responseText));
 						}						
@@ -181,6 +179,7 @@ if($_SERVER['SERVER_ADDR'] === '192.168.11.10'){
 			var url = '/youtube_db/add_eng.php?rand=' + rand;
 				ajax.onreadystatechange = function(){
 					if(ajax.readyState == 4 && ajax.status == 200){
+						console.log(ajax.responseText);
 						var re = JSON.parse(ajax.responseText);
 						if(re != ''){
 							console.log(re[0]);
@@ -197,6 +196,7 @@ if($_SERVER['SERVER_ADDR'] === '192.168.11.10'){
 					}
 				}
 				
+				console.log('2016/04/07');
 				ajax.open('POST',url,true);
 				ajax.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
 				ajax.send('p=' + json_data);
@@ -223,14 +223,18 @@ if($_SERVER['SERVER_ADDR'] === '192.168.11.10'){
 				eng_name = document.getElementById("eng_name").value;
 				pinyin_name = document.getElementById("pinyin_name").value;
 				comment = document.getElementById("comment").value;
+console.log('2016/04/07 22:51:32');
 				player.cuePlaylist({list:list});
+console.log('2016/04/07 22:52:20');
 			}
 		}
 		
 		function fn_replace(q){
-			var x = {'&':'%26', 
-					 '"':'%22',
-					 '\n':'%0d%0a'
+			var x = {'\&'	:	'%26', 
+					 '\"'	:	'%22',
+					 '\''	:	'%27%27',
+					 ' '	:	'%20',
+					 '\n'	:	'%0d%0a'
 					 };
 			for(var i in x){
 				q= q.replace(RegExp(i,'g'),x[i]);
