@@ -52,8 +52,6 @@ echo '</div>';	//include_main_area
 if(DEBUG){
 		print_r($include_main_document_show->show_lid_array);
 		print_r($include_main_document_show->show_vid_array);
-		
-		
 }
 
 
@@ -94,6 +92,7 @@ class main_document_search{
 				$eng_name = $val['eng_name'];
 				$comment = $val['comment'];
 				//StyleSheet main #00074"
+				echo '2016/04/17 1:43:27';
 				echo '<div class = "S0100_main_document_artist_card">';
 					echo '<div class = "S0102_main_artist_top_left">';
 						echo "<img src = \"http://i1.ytimg.com/vi/{$list_fast_videoid}/mqdefault.jpg\" title = \"{$title}\" alt=\"{$title}\">";
@@ -124,12 +123,15 @@ class main_document_search{
 		$sql_cmd = $db->prepare('select video_id from vid_lid where lid_rowid = :a');
 		$sql_cmd->bindValue('a',$lid_rowid,SQLITE3_TEXT);
 		$temp = $sql_cmd->execute();
-		
+		if(DEBUG){echo '2016/04/17 1:48:14';}
+
 		echo '<div class = "S0103_mini_card_area">';
 			while ($val = $temp->fetchArray(SQLITE3_ASSOC)){
 				echo '<div class = "S0104_mini_card">';
+				if(DEBUG){echo '2016/04/17 1:51:38';}
 				if(DEBUG){print_r($val);}
 					$title = $this->video_id_title ($val['video_id']);
+					$title = htmlspecialchars($this->video_id_title ($val['video_id']));
 					$a_url =  $_SERVER["SCRIPT_NAME"].'?search_query='.urlencode($this->video_id_title ($val['video_id']));
 					echo "<a href=\"{$a_url}\" title=\"{$title}\"><img src=\"http://i1.ytimg.com/vi/{$val['video_id']}/mqdefault.jpg\" alt=\"{$title}\"></a>";
 				echo '</div>';
