@@ -330,8 +330,68 @@ include_searchform:height: 50px;
 }
 
 .S0104_mini_card img{
-		width:192px;
-		height:120px;
-		padding:5px;
-		
+	width:192px;
+	height:120px;
+	padding:5px;
+    margin-top: -10px;
+}
+
+.S0203_mini_card_title{
+	width:180px;
+	margin-top: -10px;
+	padding-left: 10px;
+}
+
+.S0203_mini_card_title p{
+    font-size: 12px;
+    line-height: 19px;
+    color: blue;
+}
+
+.S0204_mini_card_img{
+	margin: 0px;
+	padding: 0px;
+	width: 192px;
+
+}
+
+.S0205_main_player_img{
+}
+
+.S0205_main_player_img img{
+    width: 320px;
+    height: 180px;
+    margin: 8px;
+}
+
+.S0206_main_player_text{
+	width:400px;
+	margin-top: -10px;
+	padding-left: 10px;
+}
+
+.S0206_main_player_text p{
+    font-size: 18px;
+    color: blue;
+    margin: 12px;
+}
+
+
+/* ////////////////////////////////////////// */
+/*再生エリア*/
+.S0201_main_player_area{
+	width: 700px;
+	display:flex;
+	flex-direction: row;
+	border-style: double;
+    border-width: 1px;
+    border-color: #CCC;
+
+}
+
+.S0202_main_list_item_area{
+
+	border-style: double;
+    border-width: 1px;
+    border-color: #CCC;
 }

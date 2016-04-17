@@ -10,7 +10,7 @@ if(count(get_included_files()) == 1 or basename($_SERVER['SCRIPT_FILENAME']) == 
 
 //debug 項目
 ///////////////////////////////////////
-if(DEBUG){echo '<pre>';}
+// if(DEBUG){echo '<pre>';}
 if(DEBUG){echo '#013 >> '; echo __FILE__;}
 if(DEBUG){echo '#014 >> ';var_dump($_REQUEST);}
 
@@ -107,7 +107,7 @@ class main_document_search{
 				$this->lid_rowid_vid($rowid);
 			}
 		echo '</div>';		//"S0110_from_lid"
-		echo '<pre>';
+		// echo '<pre>';
 		echo 'pagecmd<br>';
 		echo count($this->show_lid_array);
 		$db->close();	
@@ -126,14 +126,17 @@ class main_document_search{
 		if(DEBUG){echo '2016/04/17 1:48:14';}
 
 		echo '<div class = "S0103_mini_card_area">';
+			// 2016/04/17 21:52:21
 			while ($val = $temp->fetchArray(SQLITE3_ASSOC)){
 				echo '<div class = "S0104_mini_card">';
-				if(DEBUG){echo '2016/04/17 1:51:38';}
+				if(DEBUG){echo '2016/04/17 21:52:51';}
 				if(DEBUG){print_r($val);}
 					$title = $this->video_id_title ($val['video_id']);
+					// htmlspecialchars 2016/04/17 1:56:59
 					$title = htmlspecialchars($this->video_id_title ($val['video_id']));
 					$a_url =  $_SERVER["SCRIPT_NAME"].'?search_query='.urlencode($this->video_id_title ($val['video_id']));
-					echo "<a href=\"{$a_url}\" title=\"{$title}\"><img src=\"http://i1.ytimg.com/vi/{$val['video_id']}/mqdefault.jpg\" alt=\"{$title}\"></a>";
+					echo "<div class = \"S0204_mini_card_img\"> <a href=\"{$a_url}\" title=\"{$title}\"><img src=\"http://i1.ytimg.com/vi/{$val['video_id']}/mqdefault.jpg\" alt=\"{$title}\"></a></div>";
+					echo "<div class = \"S0203_mini_card_title\"><a href=\"{$a_url}\" title=\"{$title}\"><p>{$title}</p></a></div>";
 				echo '</div>';
 			}
 		echo '</div>';
@@ -178,35 +181,60 @@ class main_document_search{
 ////////////////////////////////////////////////////////////
 	
 // 検索キーワードからVIDEOID情報を検索します。
-// 03/17	
+// 2016/04/17 23:55:52
 ////////////////////////////////////////////////////////////
 	public function from_vid($req_key){
 		if(count($this->show_lid_array) == 0){
 			$db = new sqlite3(DB_NAME,SQLITE3_OPEN_READONLY);
 			$db->busyTimeout(10000);
-			echo '#0153<br>';
-			echo '<br>';
+			if(DEBUG){echo '#2016/04/17 14:05:55';}
 			$temp = $db->prepare('select * from vid where title like :a');
 			$temp->bindValue(':a','%'.$req_key.'%',SQLITE3_TEXT);
 			$temp2 = $temp->execute();
+			$base_url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'].'?search_query=';
+			// http://i1.ytimg.com/vi/{}/mqdefault.jpg
 				while($val = $temp2->fetchArray(SQLITE3_ASSOC)){
-					$this->show_vid_array[] = $val['video_id'];
-					echo '<br>';
-					echo '<br>';
-					echo 'from vid<br>';
-					print_r($val);
-					foreach ($this->req_vid_inlid($val['video_id']) as $key => $vval){
-						echo $vval[$key];
-						$this->videos_from_lid($vval[$key]);
-					}
+					// 檢索到的視頻內容，會有多重結果
+					// <a href="" title=""></a>
+					// <img src="" alt="">
+					echo '<div class ="S0201_main_player_area">';
+							//$this->show_vid_array[] = $val['video_id'];
+// 2016/04/18 1:21:58
+							$a_url = $base_url.urlencode($val['title']);
+							$ttile = htmlspecialchars($val['title']);
+							echo "<div class = \"S0205_main_player_img\"><img src=\"http://i1.ytimg.com/vi/{$val['video_id']}/mqdefault.jpg\" alt=\"{$ttile}\"></div>";
+							echo "<div class = \"S0206_main_player_text\"><a href=\"{$a_url}\" title=\"{$ttile}\"><p>{$ttile}</p></a></div>";
+
+							if(DEBUG){print_r($val);}
+					echo '</div>';	//<div id ="S0201_main_player_area">
+
+					echo '<div class ="S0202_main_list_item_area">';
+					// 包含此視頻的列表ID，一個視頻可能會包含在多個視頻列表內
+							if(DEBUG){print_r($val);}
+							if(DEBUG){echo '#2016/04/17 14:08:20';}
+							echo '#2016/04/17 20:19:11<br>';
+							foreach ($this->req_vid_inlid($val['video_id']) as $key => $vval){
+								// 包含此視頻的列表ID 2016/04/17 20:28:01
+								echo $vval;
+								echo '<br>';
+							}
+					echo '</div>'; //S0201_main_list_item_area
 				}
-			echo '<pre>';
+
 			echo '#0154<br>';
 			echo (count($this->show_vid_array));
 		
-		$db->close();
+			$db->close();
 		}
 	}
+
+
+	public function youtube_player($lid,$vid){
+
+
+	}
+
+
 	
 	
 	// リストIDからすべてのVIDEOIDを検索します。
@@ -229,6 +257,7 @@ class main_document_search{
 	}
 	
 	private function lid_roid_tovids($lid_rowid){
+		if(DEBUG){echo '#2016/04/17 20:12:09';}
 		$db = new sqlite3(DB_NAME,SQLITE3_OPEN_READONLY);
 		$db->busyTimeout(10000);
 		$sql_cmd = $db->prepare('select video_id from vid_lid where "lid_rowid" = :a');
@@ -243,10 +272,6 @@ class main_document_search{
 				echo $this->video_id_title($val['video_id']);
 				echo '<br>';
 		}
-		
-		
-		echo 'ここで今日の仕事は終了、LID';
-		echo __LINE__;
 	}
 	
 	
@@ -263,11 +288,16 @@ class main_document_search{
 		$temp = $sql_cmd->execute();
 		$req_data = array();
 			while($val = $temp->fetchArray(SQLITE3_ASSOC)){
-					if(DEBUG){echo $val['LID_rowid'];}
-					$req_data[] = $this->req_lid($val['LID_rowid']);
+				foreach($val as $key => $vval){
+					// print_r($this->req_lid($vval));
+					$req_data[count($req_data)] = $this->req_lid($vval[0]);
+				}
 			}
-		return $req_data;
+
+		echo '#2016/04/17 17:58:12<br>';
+		if(DEBUG){var_dump($req_data);}
 		$db->close();
+		return array_unique ($req_data);
 	}
 	
 	
@@ -279,12 +309,13 @@ class main_document_search{
 		$sql_cmd = $db->prepare('select list from lid where rowid = :a');
 		$sql_cmd->bindValue(':a',$lid,SQLITE3_TEXT);
 		$temp = $sql_cmd->execute();
-		$req_data = array();
+		// $req_data = array();
 		while($val = $temp->fetchArray(SQLITE3_ASSOC)){
-			$req_data[count($req_data)] = $val['list'];
+			// $req_data[count($req_data)] = $val['list'];
+			$req_data = $val['list'];
 		}
-		return $req_data;
 		$db->close();
+		return $req_data;
 	}
 	
 	
