@@ -30,15 +30,27 @@ echo '<div id ="include_main_area">';
 		//ADSE 広告選択
 		////////////////////////////////////////	
 		// if(ADSENSE){adsense_area2();};
+
+		$video_chk = $include_main_document_show->youtube_player_chk();
+
+		if($video_chk){
+			echo '#2016/04/20 1:10:19';
+			echo 'player_area';
+			print_r($video_chk);
+			$include_main_document_show->youtube_player($video_chk[0]['vidio_id'],'test');
+
+		}else{
+			//検索のキーワードから再生リストのTitleと一致するリストを検索します。
+			//また、そのリストに含まれるすべてのVIDEOIDとVIDEOのタイトルを表示します。
+			////////////////////////////////////////
+			$include_main_document_show->from_lid(urldecode(trim($_REQUEST['search_query'])));
 		
-		//検索のキーワードから再生リストのTitleと一致するリストを検索します。
-		//また、そのリストに含まれるすべてのVIDEOIDとVIDEOのタイトルを表示します。
-		////////////////////////////////////////
-		$include_main_document_show->from_lid(urldecode(trim($_REQUEST['search_query'])));
-	
-		//Video リクエスト
-		////////////////////////////////////////
-		$include_main_document_show->from_vid(urldecode(trim($_REQUEST['search_query'])));
+			//Video リクエスト
+			////////////////////////////////////////
+			$include_main_document_show->from_vid(urldecode(trim($_REQUEST['search_query'])));
+		}
+
+
 	echo '</div>';	//include_main_center
 
 	echo '<div id = "include_main_right">';
@@ -212,7 +224,6 @@ class main_document_search{
 					// 包含此視頻的列表ID，一個視頻可能會包含在多個視頻列表內
 							if(DEBUG){print_r($val);}
 							if(DEBUG){echo '#2016/04/17 14:08:20';}
-							echo '#2016/04/17 20:19:11<br>';
 							foreach ($this->req_vid_inlid($val['video_id']) as $key => $vval){
 								// 包含此視頻的列表ID 2016/04/17 20:28:01
 								echo $vval;
@@ -229,13 +240,7 @@ class main_document_search{
 	}
 
 
-	public function youtube_player($lid,$vid){
 
-
-	}
-
-
-	
 	
 	// リストIDからすべてのVIDEOIDを検索します。
 	// 03/17
@@ -278,6 +283,7 @@ class main_document_search{
 	
 	
 	private function req_vid_inlid($vid){
+// 2016/04/19 23:45:42
 		//VIDから所属するLID_ROWIDをリターン
 		//03/17
 		///////////////////////////////////////
@@ -286,11 +292,13 @@ class main_document_search{
 		$sql_cmd = $db->prepare('select LID_rowid from vid_lid where video_id = :a');
 		$sql_cmd->bindValue(':a',$vid,SQLITE3_TEXT);
 		$temp = $sql_cmd->execute();
+
 		$req_data = array();
+
+		print_r($req_data);
 			while($val = $temp->fetchArray(SQLITE3_ASSOC)){
 				foreach($val as $key => $vval){
-					// print_r($this->req_lid($vval));
-					$req_data[count($req_data)] = $this->req_lid($vval[0]);
+					$req_data[count($req_data)] = $this->req_lid($vval);
 				}
 			}
 
@@ -318,7 +326,35 @@ class main_document_search{
 		return $req_data;
 	}
 	
-	
+	public function youtube_player_chk(){
+// 2016/04/20 1:07:38
+		// 再生プレーヤを追加
+		if(DEBUG){echo '#2016/04/20 0:25:36 function youtube_player()';}
+		$db = new sqlite3(DB_NAME,SQLITE3_OPEN_READONLY);
+		$db->busyTimeout(10000);
+		$sql_select = $db->prepare('select video_id, title from vid where title = :a');
+		$sql_select->bindValue(':a',$_GET['search_query']);
+		$temp = $sql_select->execute();
+		$req_vid = array();
+		while($val = $temp -> fetchArray(SQLITE3_ASSOC ) ) {
+			if(DEBUG){echo '<pre>'; print_r($val);};
+			$count = count($req_vid);
+			$req_vid[$count]['vidio_id'] = $val['video_id'];
+			$req_vid[$count]['title'] = $val['title'];
+		}
+
+		$db->close();
+		return $req_vid;
+	}
+
+	public function youtube_player($vid, $lid){
+// 2016/04/20 1:13:42
+		 // 再生プレーヤを追加
+		echo "<iframe width=\"560\" height=\"315\" src=\"https://www.youtube.com/embed/{$vid}\" frameborder=\"0\" allowfullscreen></iframe>";
+
+	}
+
+
 	
 	
 	public function debug($q){

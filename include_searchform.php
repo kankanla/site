@@ -4,6 +4,7 @@ if(count(get_included_files()) == 1 or basename($_SERVER['SCRIPT_FILENAME']) == 
 	include_once('404.php');
 }else{
 	include_once('aixin.php');
+
 }
 
 //LOG
@@ -17,10 +18,9 @@ if($_SERVER['SERVER_ADDR'] === '192.168.11.10'){
 
 $action_url = $_SERVER['REQUEST_URI'];
 $logo_img = '<img src="image/logo.png" alt="テスト" >';
-$logo_img = '';
+
 if(array_key_exists('search_query',$_GET)){
 	$value = $_GET['search_query'];
-	if(DEBUG){echo $value;};
 	//その一
 	//$value =  str_replace("%20","+",htmlentities(urldecode($value)));
 	//その二
@@ -116,7 +116,7 @@ function sub_list_none(){
 //include_searchform.php
 function sub_list_ajax(q_data,rand){
 	//rand = 198
-	console.log('#20001');
+	console.info('#2016/04/20 1:39:42');
 	var x = new XMLHttpRequest();
 	var url = '/youtube_db/search.php?rand=' + rand;
 
@@ -125,7 +125,6 @@ function sub_list_ajax(q_data,rand){
 				var sub_text = document.getElementById('sub_list');
 				var input_text = document.getElementById('searchform_q');
 				var get_list = JSON.parse(x.responseText);
-				console.log(get_list);
 				var ii = "";
 				if(get_list.length > 0){
 					for(var i = 0; i < get_list.length ; ++i){

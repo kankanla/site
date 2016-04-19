@@ -28,8 +28,8 @@ class allartist{
 
 	function allartist (){	
 	}
+
 	function artist(){
-		
 		$include_allartist_url = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'].'?search_query=';
 		$db = new sqlite3(DB_NAME,SQLITE3_OPEN_READONLY);
 		$db->busyTimeout(10000);
